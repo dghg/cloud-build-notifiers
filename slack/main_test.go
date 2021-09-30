@@ -13,6 +13,7 @@ func TestWriteMessage(t *testing.T) {
 	b := &cbpb.Build{
 		ProjectId: "my-project-id",
 		Id:        "some-build-id",
+		Images:    []string{"my-project-id"},
 		Status:    cbpb.Build_SUCCESS,
 		LogUrl:    "https://some.example.com/log/url?foo=bar",
 	}
@@ -33,7 +34,7 @@ func TestWriteMessage(t *testing.T) {
 			}},
 		}},
 	}
-
+	println(want)
 	if diff := cmp.Diff(got, want); diff != "" {
 		t.Errorf("writeMessage got unexpected diff: %s", diff)
 	}
