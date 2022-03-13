@@ -79,11 +79,17 @@ func (s *slackNotifier) SendNotification(ctx context.Context, build *cbpb.Build)
 }
 
 func (s *slackNotifier) writeMessage(build *cbpb.Build) (*slack.WebhookMessage, error) {
-	txt := fmt.Sprintf(
-		"Build %s: %s",
-		build.Status,
-		build.Images[0],
-	)
+	// Filter Build : images not available
+	txt := ""
+	if len(build.Images) == 0 {
+		txt = fmt.Sprintf("Build %s (status: %s) is complete", build.Id, build.Status)
+	} else {
+		txt = fmt.Sprintf(
+			"Build %s: %s",
+			build.Status,
+			build.Images[0],
+		)
+	}
 
 	var clr string
 	switch build.Status {
